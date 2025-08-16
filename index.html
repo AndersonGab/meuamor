@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Para meu amor</title>
+  <style>
+    body, html {
+      height: 100%;
+      margin: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: #d6ebff;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      overflow: hidden;
+      flex-direction: column;
+      user-select: none;
+    }
+
+    .texto-cima {
+      font-size: 28px;
+      font-weight: 600;
+      color: #d81b1b;
+      margin-bottom: 20px;
+      text-shadow: 0 0 5px #ff80ab;
+    }
+
+    .btn-coracao {
+      width: 130px;
+      height: 130px;
+      cursor: pointer;
+      animation: pulsar 1.5s infinite ease-in-out;
+      filter: drop-shadow(0 0 6px #ff80ab);
+      transition: filter 0.3s ease;
+    }
+
+    .btn-coracao:hover {
+      filter: drop-shadow(0 0 15px #ff4081);
+      animation-duration: 1s;
+    }
+
+    @keyframes pulsar {
+      0%, 100% {
+        transform: scale(1);
+        filter: drop-shadow(0 0 6px #ff80ab);
+      }
+      50% {
+        transform: scale(1.1);
+        filter: drop-shadow(0 0 20px #ff4081);
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="texto-cima">Clica no coração</div>
+
+  <img
+    src="https://cdn-icons-png.flaticon.com/512/833/833472.png"
+    alt="Coração"
+    class="btn-coracao"
+    onclick="window.location.href='pagina.html'"
+  />
+</body>
+</html>
