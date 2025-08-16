@@ -3,63 +3,287 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Para meu amor</title>
+  <title>Nosso Amor</title>
   <style>
-    body, html {
-      height: 100%;
-      margin: 0;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      background: #d6ebff;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      overflow: hidden;
-      flex-direction: column;
-      user-select: none;
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      background: linear-gradient(135deg, #89CFF0, #ffffff, #ff9999);
+      font-family: 'Segoe UI', sans-serif;
+      text-align: center;
+      overflow-x: hidden;
     }
 
-    .texto-cima {
-      font-size: 28px;
-      font-weight: 600;
-      color: #d81b1b;
-      margin-bottom: 20px;
-      text-shadow: 0 0 5px #ff80ab;
+    h1 { color: #0077c2; margin-top: 20px; }
+
+    /* Botão WhatsApp */
+    .whatsapp-btn{
+      display:inline-block; margin-top:15px; padding:12px 20px;
+      background:linear-gradient(135deg,#ff7f7f,#89CFF0); color:#fff; font-size:16px; font-weight:bold;
+      border-radius:30px; text-decoration:none; box-shadow:0 4px 10px rgba(0,0,0,.2);
+      transition:transform .2s, box-shadow .2s;
+    }
+    .whatsapp-btn:hover{ transform:scale(1.05); box-shadow:0 6px 14px rgba(0,0,0,.25); }
+
+    /* Carrossel */
+    .carousel{
+      position:relative; overflow:hidden; border-radius:12px; max-width:320px; margin:0 auto 20px;
+      box-shadow:0 4px 12px rgba(0,0,0,.1);
+    }
+    .carousel-track{ display:flex; transition: transform .4s ease; }
+    .carousel img{
+      width:100%; height:auto; max-height:400px; object-fit:cover; border-radius:12px; flex-shrink:0;
     }
 
-    .btn-coracao {
-      width: 130px;
-      height: 130px;
-      cursor: pointer;
-      animation: pulsar 1.5s infinite ease-in-out;
-      filter: drop-shadow(0 0 6px #ff80ab);
-      transition: filter 0.3s ease;
+    /* Texto romântico */
+    .texto{
+      font-size:18px; color:#ef3b3b; margin:20px; font-weight:600; border-bottom:2px solid #ffffff;
+      padding-bottom:12px; max-width:500px; margin-left:auto; margin-right:auto;
     }
 
-    .btn-coracao:hover {
-      filter: drop-shadow(0 0 15px #ff4081);
-      animation-duration: 1s;
+    /* Botão surpresa */
+    .surpresa{
+      margin-top:20px; padding:12px 24px; background:linear-gradient(135deg,#ff7f7f,#89CFF0); color:#fff;
+      border:none; border-radius:30px; font-size:18px; cursor:pointer; box-shadow:0 4px 12px rgba(136,201,227,.6);
+      transition:background .3s ease, transform .2s ease; user-select:none;
+    }
+       .surpresa:hover{ transform:scale(1.05); box-shadow:0 6px 14px rgba(0,0,0,.25); }
+    /* Alerta surpresa */
+    .alerta-surpresa{
+      display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(0,0,0,.5);
+      backdrop-filter:blur(4px); justify-content:center; align-items:center; z-index:1000;
+    }
+    .alerta-conteudo{
+      background:#fff0f6; padding:30px 40px; border-radius:20px; text-align:center; max-width:320px; color:#ef3b3b;
+    }
+    .btn-fechar{
+      margin-top:20px; padding:10px 24px; background:linear-gradient(135deg,#ff7f7f,#89CFF0);
+      color:#fff; border:none; border-radius:30px; font-size:16px; cursor:pointer;
     }
 
-    @keyframes pulsar {
-      0%, 100% {
-        transform: scale(1);
-        filter: drop-shadow(0 0 6px #ff80ab);
-      }
-      50% {
-        transform: scale(1.1);
-        filter: drop-shadow(0 0 20px #ff4081);
-      }
+    /* Topo */
+    .topo{
+      background:linear-gradient(135deg,#89CFF0,#ffffff,#ff9999); padding:18px 12px; border-bottom:1px solid #f8bbd0;
+      margin-bottom:24px; border-radius:0 0 20px 20px;
+    }
+    .topo h1{ font-size:24px; color:#ef3b3b; font-weight:bold; font-style:italic; }
+    .subtitulo{ font-size:15px; color:#ef3b3b; font-style:italic; }
+
+    /* Card estilo Spotify */
+    .card{
+      width:min(420px,92vw); background:#151922; border-radius:22px; color:#e7eef7; margin:30px auto; padding:16px;
+      box-shadow:0 20px 45px rgba(0,0,0,.45); text-align:left;
+    }
+    .card .top{ display:flex; align-items:center; gap:16px; }
+    .cover{ width:80px; height:80px; border-radius:12px; overflow:hidden; }
+    .cover img{ width:100%; height:100%; object-fit:cover; }
+    .song{ font-weight:700; font-size:1.1rem; }
+    .artist{ color:#9fb0c3; font-size:.9rem; }
+    .progress{ margin:14px 0; }
+    .bar{ height:6px; background:rgba(255,255,255,.2); border-radius:999px; overflow:hidden; cursor:pointer; }
+    .bar-fill{ height:100%; width:0%; background:#1ed760; }
+    .time{ display:flex; justify-content:space-between; color:#9fb0c3; font-size:.8rem; margin-top:4px; }
+    .controls{ display:flex; justify-content:center; align-items:center; gap:12px; margin:14px 0; }
+    .btn{
+      background:#0f1420; color:#fff; border-radius:50%; width:40px; height:40px; display:grid; place-items:center;
+      user-select:none;
+    }
+    .btn.play{ background:#1ed760; color:#000; width:54px; height:54px; font-weight:900; }
+    .dedic{ margin-top:10px; color:#d7e4f0; font-size:.95rem; }
+    .footer{ margin-top:14px; font-size:.8rem; color:#9fb0c3; text-align:center; }
+    .footer a{ color:#1ed760; text-decoration:none; }
+
+    /* Corações caindo */
+    .coracoes{
+      position:fixed; top:0; left:0; width:100%; height:100%; pointer-events:none; z-index:10;
+    }
+    .coracao{
+      position:absolute; top:-10px; width:20px; height:20px;
+      background-image:url('https://cdn-icons-png.flaticon.com/512/833/833472.png');
+      background-size:cover;
+      animation:cair 6s linear forwards;
+    }
+    @keyframes cair{
+      0% { transform: translateY(-10vh); opacity:1; }
+      100% { transform: translateY(100vh); opacity:0; }
     }
   </style>
 </head>
 <body>
-  <div class="texto-cima">Clica no coração</div>
+<header class="topo">
+  <div class="banner">
+    <h1>Para minha princesa❤️</h1>
+    <p class="subtitulo">Eu te amooo</p>
+  </div>
+</header>
 
-  <img
-    src="https://cdn-icons-png.flaticon.com/512/833/833472.png"
-    alt="Coração"
-    class="btn-coracao"
-    onclick="window.location.href='pagina.html'"
-  />
+<div class="carousel" id="carousel">
+  <div class="carousel-track" id="carouselTrack">
+    <img src="ft1.jpg" alt="Foto 1">
+    <img src="ft2.jpg" alt="Foto 2">
+    <img src="ft3.jpg" alt="Foto 3">
+    <img src="ft4.jpg" alt="Foto 4">
+  </div>
+</div>
+
+<div class="texto">
+Eu quero que você saiba o quanto é importante para mim. Você é a parte mais linda da minha vida, aquela que transforma os dias comuns em momentos inesquecíveis. Seu sorriso ilumina até os meus dias mais difíceis, e o seu carinho me dá forças para seguir em frente. Estar ao seu lado me mostra o verdadeiro significado do amor, e cada instante com você é um presente que eu guardo no coração. Obrigado por tanto amor, eu te amo mais do que consigo expressar em palavras, e sou eternamente grato por ter você como a pessoa mais especial da minha vida Sarah...❤️
+</div>
+
+<a href="https://wa.me/5513997381291?text=Eu%20te%20amo%20%E2%9D%A4%EF%B8%8F" target="_blank" class="whatsapp-btn">
+   💌 Está com saudades? Conte sempre comigo!
+</a>
+
+<a href="https://wa.me/5513997381291?text=Vale%20chocolate%20resgatado%20%E2%9D%A4%EF%B8%8F" target="_blank" class="whatsapp-btn">
+   🍫 Vale chocolate
+</a>
+
+<button class="surpresa" onclick="mostrarSurpresa()">🌹 Descura um segredo</button>
+
+<!-- Alerta surpresa -->
+<div id="alerta-surpresa" class="alerta-surpresa">
+  <div class="alerta-conteudo">
+<h2>Nosso namoro está mais perto do que você imagina✨</h2>
+<p>A cada instante ao seu lado, meu coração tem ainda mais certeza que você é e sempre foi o amor da minha vida. Nosso grande momento está chegando e será único, lindo e inesquecível, assim como o nosso amor...</p>  
+<p style="font-weight:bold; font-size: 20px; margin-top: 20px;">Eu te amo, minha princesa ❤️</p>
+
+    <button onclick="fecharAlerta()" class="btn-fechar">Fechar</button>
+  </div>
+</div>
+
+<!-- Card estilo Spotify -->
+<div class="card">
+  <div class="top">
+    <div class="cover">
+      <img src="capa.jpg" alt="Capa do álbum" />
+    </div>
+
+
+    
+    <div>
+      <div class="song">Amor Livre</div>
+      <div class="artist">Filipe Ret</div>
+    </div>
+  </div>
+
+  <div class="progress">
+    <div class="bar" id="bar"><div class="bar-fill" id="barFill"></div></div>
+    <div class="time"><span id="tempoAtual">0:00</span><span id="tempoTotal">0:00</span></div>
+  </div>
+
+  <div class="controls">
+    <div class="btn">⏮</div>
+    <div class="btn play" id="playPauseBtn">▶</div>
+    <div class="btn">⏭</div>
+  </div>
+
+ 
+
+  <div class="footer">
+    Feito com 💚 para você — <a href="https://open.spotify.com/track/5odlY52u43F5BjByhxg7wg" target="_blank">Ouvir agora</a>
+  </div>
+</div>
+
+
+
+<!-- Áudio -->
+<audio id="audio" preload="auto" loop playsinline>
+  <!-- DICA: renomeie seu arquivo para algo simples, ex: amor-livre.mp3 -->
+  <source src="Filipe Ret - Amor Livre (Letra⧸Lyrics).mp3" type="audio/mpeg" />
+  Seu navegador não suporta áudio.
+</audio>
+
+<!-- Corações -->
+<div class="coracoes" id="coracoes-container"></div>
+
+<script>
+  /* ------------ Player ------------ */
+  const audio = document.getElementById("audio");
+  const playPauseBtn = document.getElementById("playPauseBtn");
+  const bar = document.getElementById("bar");
+  const barFill = document.getElementById("barFill");
+  const tempoAtual = document.getElementById("tempoAtual");
+  const tempoTotal = document.getElementById("tempoTotal");
+
+  // Tenta tocar ao carregar
+  window.addEventListener("load", () => {
+    audio.play().then(() => {
+      playPauseBtn.textContent = "⏸";
+    }).catch(() => {
+      // Autoplay pode ser bloqueado; o primeiro clique no botão tocará
+      playPauseBtn.textContent = "▶";
+    });
+  });
+
+  playPauseBtn.addEventListener("click", () => {
+    if (audio.paused) {
+      audio.play();
+      playPauseBtn.textContent = "⏸";
+    } else {
+      audio.pause();
+      playPauseBtn.textContent = "▶";
+    }
+  });
+
+  // Atualiza barra e tempos
+  function fmt(s){
+    const m = Math.floor(s/60);
+    const ss = Math.floor(s%60).toString().padStart(2,"0");
+    return `${m}:${ss}`;
+  }
+
+  audio.addEventListener("loadedmetadata", () => {
+    tempoTotal.textContent = isFinite(audio.duration) ? fmt(audio.duration) : "0:00";
+  });
+
+  audio.addEventListener("timeupdate", () => {
+    const d = audio.duration || 0;
+    const c = audio.currentTime || 0;
+    barFill.style.width = d ? (c/d*100)+"%" : "0%";
+    tempoAtual.textContent = fmt(c);
+    if (d && isFinite(d)) tempoTotal.textContent = fmt(d);
+  });
+
+  // Clique para buscar na barra
+  bar.addEventListener("click", (e) => {
+    const rect = bar.getBoundingClientRect();
+    const pct = (e.clientX - rect.left) / rect.width;
+    if (audio.duration) audio.currentTime = pct * audio.duration;
+  });
+
+  /* ------------ Carrossel ------------ */
+  const track = document.getElementById("carouselTrack");
+  const imagens = track.children;
+  let index = 0;
+  function updateCarousel() {
+    const larguraSlide = imagens[0].offsetWidth;
+    track.style.transform = `translateX(-${index * larguraSlide}px)`;
+  }
+  function passarAutomaticamente() {
+    index = (index + 1) % imagens.length;
+    updateCarousel();
+  }
+  setInterval(passarAutomaticamente, 4000);
+  window.addEventListener("resize", updateCarousel);
+  window.addEventListener("load", updateCarousel);
+
+  /* ------------ Surpresa ------------ */
+  function mostrarSurpresa(){ document.getElementById('alerta-surpresa').style.display = 'flex'; }
+  function fecharAlerta(){ document.getElementById('alerta-surpresa').style.display = 'none'; }
+  window.mostrarSurpresa = mostrarSurpresa;
+  window.fecharAlerta = fecharAlerta;
+
+  /* ------------ Corações caindo ------------ */
+  const heartsContainer = document.getElementById("coracoes-container");
+  function criarCoracao(){
+    const coracao = document.createElement("div");
+    coracao.className = "coracao";
+    coracao.style.left = Math.random()*100 + "vw";
+    coracao.style.animationDuration = (4 + Math.random()*3) + "s";
+    heartsContainer.appendChild(coracao);
+    setTimeout(() => coracao.remove(), 7000);
+  }
+  setInterval(criarCoracao, 300);
+</script>
 </body>
 </html>
